@@ -1,0 +1,14 @@
+name: CI 01-Introduccion
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - 01-introduccion/**
+
+jobs:
+  check-repo:
+    runs-on: ubunto-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
