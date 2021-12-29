@@ -3,7 +3,7 @@ on:
   push:
     branches: [master]
     paths:
-    - 03-counter-app
+    - 03-counter-app/**
 
 jobs:
   check-repo:
