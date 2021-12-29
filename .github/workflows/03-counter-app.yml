@@ -1,0 +1,16 @@
+name: Checking 03-counter-app
+on:
+  push:
+    branches: [master]
+    paths:
+    - 03-counter-app
+
+jobs:
+  check-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          repository: WolfYe98/ReactCursoUdemy
+          path: 03-counter-app
