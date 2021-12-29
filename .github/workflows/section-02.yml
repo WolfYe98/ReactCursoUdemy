@@ -1,10 +1,9 @@
-name: Checking 01-introduccion
+name: Checking 02-intro-javascript
 on:
   push:
-    branches:
-    - master
+    branches: [master]
     paths:
-    - 01-introduccion/**
+    - 02-intro-javascript/**
 
 jobs:
   check-repo:
@@ -14,4 +13,4 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: WolfYe98/ReactCursoUdemy
-          path: 01-introduccion
+          path: 02-intro-javascript
