@@ -12,6 +12,8 @@ jobs:
   Run-Tests:
     runs-on: ubuntu-latest
     steps:
+      - name: list directories
+        run: ls -la
       - name: checkout
         uses: actions/checkout@v2
         with:
@@ -19,7 +21,9 @@ jobs:
           path: 03-counter-app
       - name: install dependencies
         working-directory: ./03-counter-app
-        run: npm install
+        run: |
+          ls -la
+          npm install
       - name: run tests
         working-directory: ./03-counter-app
         run: npm test
