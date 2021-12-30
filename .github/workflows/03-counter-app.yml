@@ -3,10 +3,10 @@ on:
   push:
     branches: [master]
     paths:
-    - 03-counter-app/**
-    paths-ignore:
-    - 03-counter-app/public
-    - 03-counter-app/README.md
+    - 03-counter-app/src/**
+    - 03-counter-app/package.json
+    - 03-counter-app/package-lock.json
+    
 
 jobs:
   check-repo:
