@@ -4,6 +4,9 @@ on:
     branches: [master]
     paths:
     - 03-counter-app/**
+    paths-ignore:
+    - 03-counter-app/public
+    - 03-counter-app/README.md
 
 jobs:
   check-repo:
