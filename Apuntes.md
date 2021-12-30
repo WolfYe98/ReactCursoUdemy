@@ -146,6 +146,77 @@ const Componente = ({cosas})=>{
 
 **El problema de poner ```{handler()}``` es que React llega esa línea y ve que hay que ejecutar la función (dentro de las ```{}``` todo es código JS) entonces lo ejecutará tal cual, y no se le asigna la función al evento onClick!!**
 
+**```{e=>handler()}``` y ```{handler}``` hacen lo mismo! Solo que la primera forma podemos pasarle argumentos al handler!**
+
+# Hooks
+- __useState__: En React, si queremos usar una variable cuyo valor va cambiando, no podemos hacer simplemente:
+    ```
+    const Componenete = ()={
+        let valor = 0;
+        const handler = ()=>{
+            valor++;
+        }
+        return(
+            <>
+            <h1>{valor}</h1>
+            <button onClick={handler}>Click</button>
+            </>
+        );
+    };
+    ```
+
+    El código de arriba parece que debería de funcionar pero no, porque esa variable se incrementará, pero el componente no se re-renderiza y se queda siempre con el valor inicial, es necesario el setValue que retorna el useState porque este cambia el valor y encima re-renderiza el componente, por lo cual en la pantalla se va actualizando también el valor. Los states son variables de la aplicación que cuando se modifican se re-renderiza el componente.
+
+    **Todas las variables de un componente se va a reinicializar al valor de inicio cada vez que se re-renderiza algo**. O sea, cada vez que llamamos al setValor(x), como setValor re-renderiza el componente, solamente el state de Valor va a tener un valor nuevo, las demás variables reinicializan sus valores.
+
+    La forma correcta de modificar un valor y querer que se quede modificado sería:
+
+    ```
+    const CounterApp=({value})=>{
+        const [counter,setCounter] = useState(0);
+        const handledAdd =(e)=>{
+            setCounter(counter+1);
+        }
+        return(
+            <>
+                <h1>CounterApp</h1>
+                <h2> { counter } </h2>
+                <button onClick={handledAdd}>Click Me!</button>
+            </>
+        );
+    };
+    ```
+    se hace counter + 1 porque counter es una constante, si hiciesemos counter++, counter++ intenta modificar el valor de la constante counter y nos daría error (counter++ es igual a counter = counter+1).
+
+    **React nos obliga a NO cambiar los estados directamente sin utilizar setValor!!!**.
+    
+    Cuando clickeamos en el botón, React sólamente re-renderiza los estados que se han modificado, los que no, pasa de ellos.
+
+    setValor su parámetro a recibir puede ser de dos formas:
+        
+    1. Un valor: modifica directamente el valor del state.
+        
+    2. Una función que tiene que tener un return newValor: newValor será el nuevo valor del state, y la función es por si hay que hacer operaciones para generar ese valor, por ejemplo: el state es un array de números y queremos incrementar un valor a todos los elementos del array.
+
+    Hay que importarlo desde ```import React,{useState} from 'react';```.
+    
+    Ejemplos de state:
+    ```
+    const [valEstado,setValEstado] = useState('Goku');
+    ```
+    aquí, hay un state en la app que vale ```'Goku'```.
+    
+    Si hacemos:
+    ```
+    const [valEstado,setValEstado] = useState('Goku');
+    const [valEstado2,setValEstado2] = useState('Goku2');
+    ```
+    Aquí habría dos states en la app.
+    
+
+# Pruebas unitarias y de integración
+
+
 # Tips
 - Si ponemos rafce en el archivo nos aparecerá con intellisense crear directamente el import react, el componente en forma funcional y también la exportación.    
 
