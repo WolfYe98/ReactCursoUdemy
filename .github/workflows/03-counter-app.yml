@@ -23,8 +23,9 @@ jobs:
         working-directory: 03-counter-app
         run: |
           cd 03-counter-app
-          ls
           npm install
       - name: run tests
         working-directory: 03-counter-app
-        run: npm test
+        run: |
+          cd 03-counter-app
+          npm test
