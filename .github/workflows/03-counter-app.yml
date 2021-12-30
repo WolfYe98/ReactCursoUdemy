@@ -9,7 +9,7 @@ on:
     
 
 jobs:
-  check-repo:
+  Run-Tests:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
