@@ -20,8 +20,10 @@ jobs:
           repository: WolfYe98/ReactCursoUdemy
           path: 03-counter-app
       - name: install dependencies
-        run: npm install
-          working-directory: ./03-counter-app
+        working-directory: 03-counter-app
+        run: |
+          ls
+          npm install
       - name: run tests
-        working-directory: ./03-counter-app
+        working-directory: 03-counter-app
         run: npm test
