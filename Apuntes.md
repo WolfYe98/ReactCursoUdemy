@@ -215,6 +215,75 @@ const Componente = ({cosas})=>{
     
 
 # Pruebas unitarias y de integración
+Hay dos tipos de pruebas:
+1. Pruebas unitarias: están enfocadas en pequeñas funcionalidades de la aplicación, en pequeñas piezas que hay que probar.
+
+2. Pruebas de integración: están enfocadas en como reaccionan varias piezas en conjunto.
+
+Imagina que tenemos una llanta del coche como la pieza que tenemos que probar, al hacer las pruebas unitarias podemos probar que la llanta sea redonda, con x dureza, segura etc, pues estas son pruebas unitarias.
+
+Ahora las pruebas de integración básicamente es meter la llanta ya en un coche completo, y andar con el coche a ver si está funcionando como debería de funcionar.
+
+Las pruebas deben ser:
+- Fáciles de escribir
+- Fáciles de leer
+- Confiables
+- Rápidas
+- Principalmente unitarias.
+
+**NO debemos realizar pruebas unitarias en las pruebas de integración porque se supone que esas las hemos probado ya**.
+
+Las pruebas de integración debe probar sólamente las relaciones entre las diferentes piezas.
+
+### AAA características que deberíamos aplicar en el diseño y desarrollo de las pruebas.
+1. Arrange (Arreglar): El paso que establecemos el estado inicial, inicializamos variables, importamos las cosas necesarias y así preparamos el ambiente a probar.
+2. Act (Actuar): Aquí vamos a aplicar acciones o estimulos al sujeto de pruebas (el estado anterior).
+3. Assert (Afirmar): Observar el comportamiento resultante o si los resultados sean lo esperado.
+
+Un ejemplo es:
+Vamos a probar nuestra API, antes de nada tenemos que importar los paquetes de test y del propio API, e inicializar a lo mejor alguna variable que guarden los resultados esperados (Arrange), luego tenemos que definir las funciones que definirán los tests (Act) y en los tests tenemos que comprobar que el el resultado que devuelve la API sea el esperado (Assert).
+
+### Mitos
+- Las pruebas hacen que mi app no tenga errores: FALSO, somos humanos y los errores siempre estarán.
+- Las pruebas no pueden fallar: FALSO, podemos hacer pruebas que arrojen falsos positivos o falsos negativos. Puede que una prueba lo hayan pasado sin embargo la aplicación siga sin funcionar.
+- Hacen que la aplicación sea más lento: FALSO, las pruebas solo se ejecutan en el ámbito local de desarrollo, estás no los pasarán en producción.
+- Es una pérdida de tiempo: FALSO, si hacemos pruebas bien y que sean las necesarias, no es pérdida de tiempo, de hecho mejoramos el tiempo de desarrollo.
+- Hay que probar todo: mitad y mitad, porque puede tomar demasiado tiempo para programar las pruebas. Si hay deadlines deberíamos de hacer las pruebas más principales de la app.
+
+
+### Patrón de diseño
+Se suelen crear dentro de src una carpeta de tests. Los archivos de test tienen que ir con nombre de nombre.test.js
+
+Normalmente se ejecutan todas las pruebas de golpe, pero eso se puede cambiar.
+
+### Jest
+React por defecto usa Jest.
+
+Con Jest, un test puede ser:
+```
+test('Mensaje de lo que debe pasar',()=>{
+    //Codigo para testear (assets, shouldbe...)
+});
+```
+La función es el callback, es lo que se ejecuta para testear.
+
+- describe(): esto es para agrupar las pruebas en forma de lista, por ejemplo si queremos probar que una función matemática con diferentes inputs, necesitamos varias pruebas, entonces agrupamos esas pruebas con:
+    ```
+    describe('Mensaje que se sepa que grupo debe ser',()=>{
+        test('test 1',(){
+            //blablabla
+            expect().toBe()...
+        })
+    })
+    ```
+
+- Expect-toBe: esta es la primera función, expect es la funcion principal que necesitamos, y luego toBe será llamado después como por ejemplo:
+    ```
+    const msn = 'Hola';
+    const msn2 = 'Hola';
+    expect(msn).toBe(msn2);
+    ```
+    funciona así, expectamos que el valor de una variable (expect(msn)) sea igual el valor de otra variable (.toBe(msn2)).
 
 
 # Tips
