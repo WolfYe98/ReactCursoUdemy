@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import CounterApp from './CounterApp';
-//import PrimeraApp from './PrimeraApp';
+import PrimeraApp from './PrimeraApp';
 
 
 // ReactDOM.render(
@@ -11,6 +11,6 @@ import CounterApp from './CounterApp';
 // );
 
 ReactDOM.render(
-    <CounterApp value={10} />,
+    <PrimeraApp saludo='Goku' />,
     document.querySelector('#root')
 )

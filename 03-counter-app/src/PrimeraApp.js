@@ -5,7 +5,7 @@ const PrimeraApp =({saludo})=>{ // esto ya cuenta como un functional component.
         <>
             {/* <h1>Hola mundo</h1>  */}
             {/* <p>Hola soy p</p> */}
-            <p>{saludo}</p>
+            <h1>Hola soy {saludo}</h1>
         </>
     );
 };
