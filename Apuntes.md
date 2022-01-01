@@ -235,6 +235,8 @@ Las pruebas deben ser:
 
 Las pruebas de integración debe probar sólamente las relaciones entre las diferentes piezas.
 
+Es de buena práctica que en el directorio de ```tests``` se creen subdirectorios que se llamen como el directorio que queremos probar.
+
 ### AAA características que deberíamos aplicar en el diseño y desarrollo de las pruebas.
 1. Arrange (Arreglar): El paso que establecemos el estado inicial, inicializamos variables, importamos las cosas necesarias y así preparamos el ambiente a probar.
 2. Act (Actuar): Aquí vamos a aplicar acciones o estimulos al sujeto de pruebas (el estado anterior).
@@ -283,8 +285,83 @@ La función es el callback, es lo que se ejecuta para testear.
     const msn2 = 'Hola';
     expect(msn).toBe(msn2);
     ```
-    funciona así, expectamos que el valor de una variable (expect(msn)) sea igual el valor de otra variable (.toBe(msn2)).
+    funciona así, expectamos que el valor de una variable (```expect(msn)```) sea igual el valor de otra variable (```.toBe(msn2)```).
 
+    toBe no funciona con objetos, porque dos objetos aun que tengan lo mismo, apuntan a diferentes zonas de memoria, y toBe eso lo mira en los objetos, para chequear que dos OBJETOS sean iguales tenemos que usar ```toEqual(obj)```.
+
+- toEqual: Sirve para chequear si dos __objetos__ tienen las mismas propiedades con los mismos valores (y que las propiedades se llamen igual).
+
+- <span style="color:red">Pruebas para funciones asíncronas con done:</span> __Por defecto las pruebas son SINCRONAS__ aun que se devuelva una promesa, se ejecutan siempre síncronamente, para que las pruebas sean de forma asíncronas tenemos que pasarle un parámetro ```done``` a la función callback del test:
+    ```
+    test('mi test',(done)=>{
+        funcionAsync().then(()=>{
+            expect().toBe();
+            done();
+        });
+    });
+    ```
+    Una vez que se terminen los expects es __OBLIGATORIO__ llamar al ```done()``` que es para que no se quede esperando.
+
+- <span style="color:red">Pruebas con async/await para funciones que retornan promesas:</span> una función con async, aun que devolviesemos un dato, este devolvería una Promesa, por ejemplo:
+    ```
+    const getImage = async ()=>{
+        try{
+            const datos = await fetch('url');
+            const {data} = datos.json();
+            return data.url;
+        }catch(error){
+            return error;
+        }
+    }
+    ```
+    a simple vista parece que esta función devolvería un string que sería una url, pero __NO__ devuelve una promesa que de respuesta espera un string!!!
+    Para que las prubeas funciones así, podemos hacer que la propia prueba sea async para entonces poder usar el await en lugar del then, por ejemplo:
+    De normal se haría esto
+    ```
+    test('',(done)=>{
+        getImage().then((res)=>{
+            expect(res).toBe(...);
+            done();
+        });
+    });
+    ```
+    con async/await sería:
+    ```
+    test('',async ()=>{
+        const url = await getImage();
+        expect(url).toBe();
+    });
+    ```
+    si sabemos que una función devuelve una promesa, podemos optar por esta opción siempre.
+    __Y CON ASYNC Y AWAIT ES SIN DONE!!!__
+    ```done()``` es para las pruebas donde no usamos el async/await (DENTRO DE LA PRUEBA NO ME REFIERO EN LA FUNCIÓN)
+
+## Pruebas sobre componentes de React
+
+Los primeros pasos son iguales, ir a test, crear un archivo con el nombre del componenete y luego ```.test.js```.
+
+__Debemos de alguna forma evaluar sobre el componente renderizado, para eso necesitaremos ```render``` de ```import {render} from '@testing-library/react'```__
+
+La función render recibirá como argumento el componente a renderizar:
+```
+const wrapper = render(<PrimeraApp />);
+```
+No sé porque se le pone el nombre de wrapper pero bueno vamos a seguir las buenas prácticas
+
+El objeto wrapper tiene muchos métodos, entonces podemos usar el método getByText(text), que devuelve el html del código que tenga el texto 'text', podemos directamente destructurar wrapper para usar getByText:
+```
+const {getByText} = render(<PrimeraApp saludo='Goku' />);
+expect(getByText(saludo)).toBeInTheDocument();
+```
+
+```toBeInTheDocument``` no está por defecto en las pruebas, para que esta función funcione, tenemos que importar unas cosas en el test, y para evitar escribir el mismo import en todos los tests, lo suyo es hacer en el src (junto al index.js) un archivo denominado ```setupTests.js``` y dentro metemos el import, este archivo es para poner las configuraciones de tests.
+
+El import que debemos incluir es:
+```
+import '@testing-library/jest-dom/extend-expect';
+```
+
+<span style="color:red;text-weight:bold;">Nosotros vamos a utilizar mejor Enzyme que es desarrollado por los propios desarrolladores de Facebook!!!</span>
 
 # Tips
 - Si ponemos rafce en el archivo nos aparecerá con intellisense crear directamente el import react, el componente en forma funcional y también la exportación.    
