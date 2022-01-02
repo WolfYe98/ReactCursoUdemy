@@ -11,6 +11,6 @@ import PrimeraApp from './PrimeraApp';
 // );
 
 ReactDOM.render(
-    <PrimeraApp saludo='Goku' />,
+    <CounterApp />,
     document.querySelector('#root')
 )
