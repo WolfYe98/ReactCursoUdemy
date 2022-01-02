@@ -1,0 +1,17 @@
+name: CI 04-gif-expert-app
+on:
+  push:
+    branches: [master]
+    paths:
+      - 04-gif-expert-app/src/**
+      - 04-gif-expert-app/package.json
+      - 04-gif-expert-app/package-lock.json
+jobs:
+  Run-Tests:
+    runs-on: ubunto-latest
+    steps:
+      - name: Check Repo
+        uses: actions/checkout@v2
+        with:
+          repository: WolfYe98/ReactCursoUdemy
+          path: 03-counter-app

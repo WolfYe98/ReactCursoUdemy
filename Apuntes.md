@@ -44,8 +44,25 @@
 
 - Usar ```<div></div>```para encapsular, hace que a veces el navegador tenga muchos divs que no van a usar, **por eso se debe usar** ```<Fragment></Fragment>``` **O SIMPLEMENTE** ```<></>``` en lugar de div!!!
 
+- Si usamos ```input``` y queremos que se cambie los valores, necesitamos un ```state``` que sea el valor del input, luego la propiedad de ```value``` del input tiene que ser el del ```state```:
+    ```js
+    export const Componente =()=>{
+        const [valor,setValor] = useEffect('');
+        const handlerChange =(e)=>{
+            setValor(e.target.value);
+        };
+        return(
+            <input
+                type="text"
+                value={valor}
+                onChange={handlerChange}
+            />
+        );
+    }
+    ```
+    Es necesario todo eso para que no de ningún error y que ```valor``` siempre esté actualizado.
 
-### Variables
+## Variables
 Podemos imprimir una variable en el código html de nuestro componente poniendolo entre {}, por ejemplo: 
     
 ```<h1>{contador}</h1>``` siendo contador una variable.
@@ -55,8 +72,9 @@ Si queremos imprimir un objeto lo mejor es hacer
 
 ```<pre>Json.stringify(obj)</pre>``` para que se imprima en cadena. La etiqueta ```<pre>``` es para que se ponga pequeño la letra.
 
+__Dentro de ```{}``` sólamente se pueden llamar a funciones que retornen algo o poner una variable, no se puede programar lo que es programar, para eso necesitaríamos usar cosas como ```array.map(()=>{});``` que retornan cosas.__
 
-### Comunicación entre componentes (props, PropTypes y DefaultProps)
+## Comunicación entre componentes (Padre a hijo) (props, PropTypes y DefaultProps)
 
 - Se comunican con properties (props), un componente padre puede mandarle información al componente hijo através de properties. Estos se hacen así:
     En la definición del componente hijo tenemos que incluir el parámetro props (o el nombre que sea):
@@ -128,8 +146,10 @@ Si queremos imprimir un objeto lo mejor es hacer
     ```
     Los dos equivalen lo mismo.
 
+## Comunicación entre componentes (hijo a padre)
 
-### Eventos handler en React
+
+## Eventos handler en React
 Estos a diferencia de HTML5 normal, que es poner ```onClick="nombreFuncion()"```, es diferente, aquí si queremos llamar a una función que hemos hecho fuera, es necesario que en el onClick se llame como si fuese una función ejecutando la otra función, es decir:
 ```js
 const Componente = ({cosas})=>{
@@ -197,7 +217,9 @@ const Componente = ({cosas})=>{
     1. Un valor: modifica directamente el valor del state.
         
     2. Una función que tiene que tener un return newValor: newValor será el nuevo valor del state, y la función es por si hay que hacer operaciones para generar ese valor, por ejemplo: el state es un array de números y queremos incrementar un valor a todos los elementos del array.
-
+    ```js
+    setValue((stateAnterior)=>{return algo});
+    ```
     Hay que importarlo desde ```import React,{useState} from 'react';```.
     
     Ejemplos de state:
@@ -212,6 +234,8 @@ const Componente = ({cosas})=>{
     const [valEstado2,setValEstado2] = useState('Goku2');
     ```
     Aquí habría dos states en la app.
+
+
 
 ## Custom hooks
 
