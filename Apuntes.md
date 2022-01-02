@@ -361,7 +361,85 @@ El import que debemos incluir es:
 import '@testing-library/jest-dom/extend-expect';
 ```
 
-<span style="color:red;text-weight:bold;">Nosotros vamos a utilizar mejor Enzyme que es desarrollado por los propios desarrolladores de Facebook!!!</span>
+<span style="color:red;font-weight:bold;">Nosotros vamos a utilizar mejor Enzyme que es desarrollado por los propios desarrolladores de Facebook!!! Porque es mucho más sencillo.</span>
+
+### Enzyme (Pruebas)
+Es un adaptador de JS que nos ayuda a trabajar más fácilmente, se integra con Jest, Mocha, React Native etc...
+
+Con esto comprobamos que los componentes renderizados están como queríamos.
+
+Para instalarlo tenemos que hacer o bajar la versión de React a la 16 o sino podemos instalar esta versión: 
+```npm install --save-dev @wojtekmaj/enzyme-adapter-react-17```.
+
+Para importarlo, tenemos que importar Enzyme y el adaptador de la versión de React que estemos usando, si es la 17 usamos la de wojtekmaj y sino simplemente ponemos enzyme-adapter-react-16:
+```
+import Enzyme from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+```
+
+__Debemos importarlo siempre al ```setupTests.js```.__
+
+Después de importarlo tenemos que configurar el adaptador como:
+```
+Enzyme.configure({adapter:new Adapter()})
+```
+justo debajo de las importaciones.
+
+<span style="color:red;font-weight: bold;">Además de Enzyme normal</span>, como vamos a utilizar SnapShots (más adelante explico lo que es) es necesario importar también ```enzyme-to-json```, para eso hacemos:
+```
+npm install --save-dev enzyme-to-json
+```
+Y configuramos ```setupTests.js``` con:
+```
+import {createSerializer} from 'enzyme-to-json';
+expect.addSnapshotSerializer(createSerializer({mode:'deep'}));
+```
+con esto configurado, ya podemos probar que el componente devuelve el snapShot correcto.
+
+Para testear con Enzyme hacemos:
+```
+import { shallow } from 'enzyme';
+test('',()=>{
+    const wrapper = shallow(<PrimeraApp saludo='Goku'/>);
+})
+```
+__shallow es similar al render__, pero nos da más cosas como simular clicks o tener todo el documento.
+
+<span style="color:red;font-weight:bold;">wrapper</span> es el componenete renderizado, es decir, todo el html del componente
+
+<span style="color:red;font-weight:bold;">¿Ahora, qué esperamos del componente?</span>
+
+- Que se muestre de la forma correcta, para eso hacemos:
+    ```
+    expect(wrapper).toMatchSnapshot();
+    ```
+    ¿Qué es un SnapShot? El SnapShot es como la imagen del componente, para comprobar que funciona todo bien, necesitamos el paquete ```enzyme-to-json```.
+
+    Una vez configurado el setupTests con enzyme-to-json, si nos dicen que los SnapShots no coinciden puede ser que no se haya actualizado los snapshots o que está mal el componente porque hemos cambiado algo que no deberíamos de haberlo cambiado.
+
+    <span style="color:red;font-weight:bold;">La primera vez que se ejecuta el test con snapshot siempre dará true porque es el inicio. SnapShots son para prevenir sobre todo cambios sin querer en el html renderizado de los componentes.</span>
+
+    **NO SE TOCA LA CARPETA __snapshots!!!**
+    
+    __toMatchSnapShot__ siempre compara con el snapshot anterior del componente, si el componente se ha modificado y la modificación es la versión correcta, actualizamos el snapshot con la tecla ```u``` , si por ejemplo borramos algo sin querer del componente como el SnapShot es de la versión anterior, nos indicará un error en el test, y si lo que borramos fue queriendo, con darle a la tecla ```u``` para que lo actualice ya lo arreglaríamos.
+
+- Que los textos (valores) están dentro de la etiqueta correcta, o que exista algún texto (valor) que queremos:
+    ```
+    test('',()=>{
+        const wrapper = shallow(<PrimeraApp saludo='goku' subtitulo='sub' />);
+        const textoP = wrapper.find('p').text();
+        expect(textP).toBe('sub');
+    });
+    ```
+    El find es como un ```document.querySelector()```, que podemos encontrar elementos html con sus elementos por el id o tag o class. 
+
+    Luego el elemento que retorna el find, tiene el método ```.text()``` que esto nos devuelve el texto que está dentro del elemento. (Es como ```document.querySelector('tag').innerText```);
+
+    Aquí estamos cogiendo el texto de la etiqueta ```p``` (que se supone que debe imprimir lo que haya en ```subtitulo```), y lo comparamos con ```'sub'```
+
+
+
+
 
 # Tips
 - Si ponemos rafce en el archivo nos aparecerá con intellisense crear directamente el import react, el componente en forma funcional y también la exportación.    
