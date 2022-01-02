@@ -212,7 +212,9 @@ const Componente = ({cosas})=>{
     const [valEstado2,setValEstado2] = useState('Goku2');
     ```
     Aquí habría dos states en la app.
-    
+
+## Custom hooks
+
 
 # Pruebas unitarias y de integración
 Hay dos tipos de pruebas:
