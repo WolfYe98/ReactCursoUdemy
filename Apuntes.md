@@ -4,7 +4,7 @@
 - Los componentes suelen basarse en clases o en funciones (functional component), lo segundo es lo que se está utilizando ahora, antes se usaban class component.
 
 - Un componente suele llamarse igual que el fichero, y luego se hace el export default, como por ejemplo:
-    ```
+    ```js
     const PrimeraApp =()=>{
         return <h1>Hola mundo</h1>
     };
@@ -18,7 +18,7 @@
 - Como buena práctica, los atributos de css deben ir en orden alfabético.
 
 - Como en JS no hace falta los ```;``` de normal no podemos hacer:
-    ```
+    ```js
     return 
         'hello';
     ```
@@ -26,7 +26,7 @@
     Por esto es importante usar ```;```.
 
 - Para evitar los errores del punto anterior, en React se suele utilizar ```return()``` y dentro de los ```()``` se suele poner un componente padre con todos los componentes hijos, es decir:
-    ```
+    ```js
     return(
         <div>
             <h1>Hola soy h1</h1>
@@ -35,7 +35,7 @@
     );
     ```
     Esto funcionaría perfectamente mientras que esto de abajo no serviría:
-    ```
+    ```js
     return(
         <h1>Hola soy h1</h1>
         <p>Hola soy p</p>
@@ -61,7 +61,7 @@ Si queremos imprimir un objeto lo mejor es hacer
 - Se comunican con properties (props), un componente padre puede mandarle información al componente hijo através de properties. Estos se hacen así:
     En la definición del componente hijo tenemos que incluir el parámetro props (o el nombre que sea):
 
-    ```
+    ```js
     const Componente = (props)=>{
         return(<>
             </>
@@ -71,7 +71,7 @@ Si queremos imprimir un objeto lo mejor es hacer
 
     y en el componente padre le pasamos los datos así:
 
-    ```
+    ```js
     <div>
         <Componente saludo='hola' />
     </div>
@@ -83,7 +83,7 @@ Si queremos imprimir un objeto lo mejor es hacer
 
     A dia de hoy, **no se suele usar ```(props)``` directamente, se suele usar más la destructuración para esto**.
 
-    ```
+    ```js
     const Componente = ({saludo})=>{
         return(<>
             </>
@@ -97,7 +97,7 @@ Si queremos imprimir un objeto lo mejor es hacer
     
 - **Podemos obligar a la gente meter una propiedad con PropTypes, es mejor que throw new Error por tema de memoria**
     Por ejemplo:
-    ```
+    ```js
     import PropTypes from 'prop-types';
     const PrimeraApp =({saludo})=>{ 
         return(
@@ -113,7 +113,7 @@ Si queremos imprimir un objeto lo mejor es hacer
     ```
     con el código de arriba indicamos que saludo tiene que ser de tipo string, pero no es obligatorio que el padre lo pase, para que sea obligatorio debemos usar .isRequired así:
 
-    ```
+    ```js
     PrimeraApp.propTypes = {
         saludo: PropTypes.string.isRequired
     };
@@ -121,7 +121,7 @@ Si queremos imprimir un objeto lo mejor es hacer
     De esta forma indicamos a todos los usuarios de este componente que es necesario mandar la propiedad saludo al componente.
 
 - Podemos asignar valor por defecto a una propiedad como anteriormente mencionado, ```({saludo,subtitulo='hola soy sub'})``` que es lo más normal, o podemos usar defaultProps de esta forma:
-    ```
+    ```js
     PrimeraApp.defaultProps={
         subtitulo:'hola soy sub'
     };
@@ -131,7 +131,7 @@ Si queremos imprimir un objeto lo mejor es hacer
 
 ### Eventos handler en React
 Estos a diferencia de HTML5 normal, que es poner ```onClick="nombreFuncion()"```, es diferente, aquí si queremos llamar a una función que hemos hecho fuera, es necesario que en el onClick se llame como si fuese una función ejecutando la otra función, es decir:
-```
+```js
 const Componente = ({cosas})=>{
     const handler=(e)=>console.log(e);
     return(
@@ -150,7 +150,7 @@ const Componente = ({cosas})=>{
 
 # Hooks
 - __useState__: En React, si queremos usar una variable cuyo valor va cambiando, no podemos hacer simplemente:
-    ```
+    ```js
     const Componenete = ()={
         let valor = 0;
         const handler = ()=>{
@@ -171,7 +171,7 @@ const Componente = ({cosas})=>{
 
     La forma correcta de modificar un valor y querer que se quede modificado sería:
 
-    ```
+    ```js
     const CounterApp=({value})=>{
         const [counter,setCounter] = useState(0);
         const handledAdd =(e)=>{
@@ -201,13 +201,13 @@ const Componente = ({cosas})=>{
     Hay que importarlo desde ```import React,{useState} from 'react';```.
     
     Ejemplos de state:
-    ```
+    ```js
     const [valEstado,setValEstado] = useState('Goku');
     ```
     aquí, hay un state en la app que vale ```'Goku'```.
     
     Si hacemos:
-    ```
+    ```js
     const [valEstado,setValEstado] = useState('Goku');
     const [valEstado2,setValEstado2] = useState('Goku2');
     ```
@@ -262,7 +262,7 @@ Normalmente se ejecutan todas las pruebas de golpe, pero eso se puede cambiar.
 React por defecto usa Jest.
 
 Con Jest, un test puede ser:
-```
+```js
 test('Mensaje de lo que debe pasar',()=>{
     //Codigo para testear (assets, shouldbe...)
 });
@@ -270,7 +270,7 @@ test('Mensaje de lo que debe pasar',()=>{
 La función es el callback, es lo que se ejecuta para testear.
 
 - describe(): esto es para agrupar las pruebas en forma de lista, por ejemplo si queremos probar que una función matemática con diferentes inputs, necesitamos varias pruebas, entonces agrupamos esas pruebas con:
-    ```
+    ```js
     describe('Mensaje que se sepa que grupo debe ser',()=>{
         test('test 1',(){
             //blablabla
@@ -278,6 +278,38 @@ La función es el callback, es lo que se ejecuta para testear.
         })
     })
     ```
+- beforeEach(callback): esta función es muy __util__, se ejecuta el callback antes de __CADA TEST__, esto nos servirá si vamos a usar una variable para varios tests, lo suyo es poner la variable fuera de los tests para no repetir código, y con esto le inicializamos el valor para que un test no utilice un valor modificado:
+    ```js
+    describe('',()=>{
+        let val = 0;
+        test('',()=>{
+            val++;
+            expect(val).toBe(1);
+        });
+        test('',()=>{
+            val--;
+            expect(val).toBe(-1);
+        });
+    });
+    ```
+    sin beforeEach el segundo test no pasaría porque el primero ha cambiado el valor de val a 1 y en el segundo el valor sería 0.
+    ```js
+    describe('',()=>{
+        let val = 0;
+        beforeEach(()=>{
+            val=0;
+        });
+        test('',()=>{
+            val++;
+            expect(val).toBe(1);
+        });
+        test('',()=>{
+            val--;
+            expect(val).toBe(-1);
+        });
+    });
+    ```
+    Con beforeEach sí funciona porque antes de cada test vuelve a poner el valor de val a 0.
 
 - Expect-toBe: esta es la primera función, expect es la funcion principal que necesitamos, y luego toBe será llamado después como por ejemplo:
     ```
@@ -292,7 +324,7 @@ La función es el callback, es lo que se ejecuta para testear.
 - toEqual: Sirve para chequear si dos __objetos__ tienen las mismas propiedades con los mismos valores (y que las propiedades se llamen igual).
 
 - <span style="color:red">Pruebas para funciones asíncronas con done:</span> __Por defecto las pruebas son SINCRONAS__ aun que se devuelva una promesa, se ejecutan siempre síncronamente, para que las pruebas sean de forma asíncronas tenemos que pasarle un parámetro ```done``` a la función callback del test:
-    ```
+    ```js
     test('mi test',(done)=>{
         funcionAsync().then(()=>{
             expect().toBe();
@@ -303,7 +335,7 @@ La función es el callback, es lo que se ejecuta para testear.
     Una vez que se terminen los expects es __OBLIGATORIO__ llamar al ```done()``` que es para que no se quede esperando.
 
 - <span style="color:red">Pruebas con async/await para funciones que retornan promesas:</span> una función con async, aun que devolviesemos un dato, este devolvería una Promesa, por ejemplo:
-    ```
+    ```js
     const getImage = async ()=>{
         try{
             const datos = await fetch('url');
@@ -317,7 +349,7 @@ La función es el callback, es lo que se ejecuta para testear.
     a simple vista parece que esta función devolvería un string que sería una url, pero __NO__ devuelve una promesa que de respuesta espera un string!!!
     Para que las prubeas funciones así, podemos hacer que la propia prueba sea async para entonces poder usar el await en lugar del then, por ejemplo:
     De normal se haría esto
-    ```
+    ```js
     test('',(done)=>{
         getImage().then((res)=>{
             expect(res).toBe(...);
@@ -326,7 +358,7 @@ La función es el callback, es lo que se ejecuta para testear.
     });
     ```
     con async/await sería:
-    ```
+    ```js
     test('',async ()=>{
         const url = await getImage();
         expect(url).toBe();
@@ -343,13 +375,13 @@ Los primeros pasos son iguales, ir a test, crear un archivo con el nombre del co
 __Debemos de alguna forma evaluar sobre el componente renderizado, para eso necesitaremos ```render``` de ```import {render} from '@testing-library/react'```__
 
 La función render recibirá como argumento el componente a renderizar:
-```
+```js
 const wrapper = render(<PrimeraApp />);
 ```
 No sé porque se le pone el nombre de wrapper pero bueno vamos a seguir las buenas prácticas
 
 El objeto wrapper tiene muchos métodos, entonces podemos usar el método getByText(text), que devuelve el html del código que tenga el texto 'text', podemos directamente destructurar wrapper para usar getByText:
-```
+```js
 const {getByText} = render(<PrimeraApp saludo='Goku' />);
 expect(getByText(saludo)).toBeInTheDocument();
 ```
@@ -357,7 +389,7 @@ expect(getByText(saludo)).toBeInTheDocument();
 ```toBeInTheDocument``` no está por defecto en las pruebas, para que esta función funcione, tenemos que importar unas cosas en el test, y para evitar escribir el mismo import en todos los tests, lo suyo es hacer en el src (junto al index.js) un archivo denominado ```setupTests.js``` y dentro metemos el import, este archivo es para poner las configuraciones de tests.
 
 El import que debemos incluir es:
-```
+```js
 import '@testing-library/jest-dom/extend-expect';
 ```
 
@@ -368,11 +400,21 @@ Es un adaptador de JS que nos ayuda a trabajar más fácilmente, se integra con 
 
 Con esto comprobamos que los componentes renderizados están como queríamos.
 
+
+
 Para instalarlo tenemos que hacer o bajar la versión de React a la 16 o sino podemos instalar esta versión: 
-```npm install --save-dev @wojtekmaj/enzyme-adapter-react-17```.
+```
+npm install --save-dev enzyme
+npm install --save-dev @wojtekmaj/enzyme-adapter-react-17
+```
+
+<span style="color:red;font-weigth:bold;">Si nos da errores de hooks en las pruebas tenemos que instalar el adapter con --legacy-peer-deps:</span>
+```
+npm install --save-dev --legacy-peer-deps @wojtekmaj/enzyme-adapter-react-17
+```
 
 Para importarlo, tenemos que importar Enzyme y el adaptador de la versión de React que estemos usando, si es la 17 usamos la de wojtekmaj y sino simplemente ponemos enzyme-adapter-react-16:
-```
+```js
 import Enzyme from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 ```
@@ -380,7 +422,7 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 __Debemos importarlo siempre al ```setupTests.js```.__
 
 Después de importarlo tenemos que configurar el adaptador como:
-```
+```js
 Enzyme.configure({adapter:new Adapter()})
 ```
 justo debajo de las importaciones.
@@ -389,15 +431,17 @@ justo debajo de las importaciones.
 ```
 npm install --save-dev enzyme-to-json
 ```
+
 Y configuramos ```setupTests.js``` con:
-```
+
+```js
 import {createSerializer} from 'enzyme-to-json';
 expect.addSnapshotSerializer(createSerializer({mode:'deep'}));
 ```
 con esto configurado, ya podemos probar que el componente devuelve el snapShot correcto.
 
 Para testear con Enzyme hacemos:
-```
+```js
 import { shallow } from 'enzyme';
 test('',()=>{
     const wrapper = shallow(<PrimeraApp saludo='Goku'/>);
@@ -410,7 +454,7 @@ __shallow es similar al render__, pero nos da más cosas como simular clicks o t
 <span style="color:red;font-weight:bold;">¿Ahora, qué esperamos del componente?</span>
 
 - Que se muestre de la forma correcta, para eso hacemos:
-    ```
+    ```js
     expect(wrapper).toMatchSnapshot();
     ```
     ¿Qué es un SnapShot? El SnapShot es como la imagen del componente, para comprobar que funciona todo bien, necesitamos el paquete ```enzyme-to-json```.
@@ -424,7 +468,7 @@ __shallow es similar al render__, pero nos da más cosas como simular clicks o t
     __toMatchSnapShot__ siempre compara con el snapshot anterior del componente, si el componente se ha modificado y la modificación es la versión correcta, actualizamos el snapshot con la tecla ```u``` , si por ejemplo borramos algo sin querer del componente como el SnapShot es de la versión anterior, nos indicará un error en el test, y si lo que borramos fue queriendo, con darle a la tecla ```u``` para que lo actualice ya lo arreglaríamos.
 
 - Que los textos (valores) están dentro de la etiqueta correcta, o que exista algún texto (valor) que queremos:
-    ```
+    ```js
     test('',()=>{
         const wrapper = shallow(<PrimeraApp saludo='goku' subtitulo='sub' />);
         const textoP = wrapper.find('p').text();
@@ -437,7 +481,17 @@ __shallow es similar al render__, pero nos da más cosas como simular clicks o t
 
     Aquí estamos cogiendo el texto de la etiqueta ```p``` (que se supone que debe imprimir lo que haya en ```subtitulo```), y lo comparamos con ```'sub'```
 
-
+- Que las acciones funcionen bien (clicks o algo): para esto cogemos el valor del componente con ```find``` y ```text```, luego cogemos por ejemplo el botón con ```find('button')```, si tenemos varios botones podemos usar la función ```.at(indice)``` para indicar qué botón utilizar. Para simular la acción simplemente tenemos que usar la funcíon ```.simulate('click')```, simulate recibe un parámetro que es el evento a simular.
+    
+    El ejemplo completo sería:
+    ```js
+    test('Debe incrementar el valor cuando cliqueamos en el boton +1',()=>{
+        const wrapper = shallow(<CounterApp />);
+        wrapper.find('button').at(0).simulate('click');
+        const valor = wrapper.find('h2').text().trim();
+        expect(valor).toBe('11');
+    });
+    ```
 
 
 
